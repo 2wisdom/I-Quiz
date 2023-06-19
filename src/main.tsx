@@ -9,6 +9,7 @@ import Quizzes from "./pages/Quizzes.tsx";
 import ErrorPage from "./pages/error-page.tsx";
 import { Global } from "@emotion/react";
 import global from "./style/global.css";
+import Navbar from "./components/Navbar.tsx";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -40,8 +41,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Global styles={global} />
+        <Navbar />
         <RouterProvider router={router} />
-        {/* <App /> */}
       </ThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>
