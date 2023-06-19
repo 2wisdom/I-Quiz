@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./pages/App.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./style/theme.ts";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Quizzes from "./pages/Quizzes.tsx";
@@ -35,8 +35,11 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <ThemeProvider theme={theme}>{/* <App /> */}</ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <RouterProvider router={router} />
+        {/* <App /> */}
+      </ThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );
