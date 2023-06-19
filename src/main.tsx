@@ -7,6 +7,8 @@ import theme from "./style/theme.ts";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Quizzes from "./pages/Quizzes.tsx";
 import ErrorPage from "./pages/error-page.tsx";
+import { Global } from "@emotion/react";
+import global from "./style/global.css";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -37,6 +39,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Global styles={global} />
         <RouterProvider router={router} />
         {/* <App /> */}
       </ThemeProvider>
