@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import Api from "./api/api";
+import Api from "../api/api";
 
 export type Props = {
   amount: number; // 문제 갯수
@@ -8,7 +8,7 @@ export type Props = {
   type: string; // 문제성격 (multiple / boolean)
 };
 
-export default function App(props: Props) {
+export default function Quizzed(props: Props) {
   const { amount, category, difficulty, type } = props;
 
   const { data } = useQuery(["quizzes"], async () => {
