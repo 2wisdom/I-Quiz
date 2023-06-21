@@ -41,8 +41,10 @@ export default function Score({
       </h1>
       <p>
         It took&nbsp;
-        <span style={{ fontWeight: 700, color: "#673ab7" }}>{duration}</span>
-        &nbsp;minutes to solve the Quizzes ⏱️
+        <span style={{ fontWeight: 700, color: "#673ab7" }}>
+          {duration / 1000}
+        </span>
+        &nbsp;second to solve the Quizzes ⏱️
       </p>
       <p>
         Congratulations! You got&nbsp;
