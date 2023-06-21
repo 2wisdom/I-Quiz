@@ -21,6 +21,11 @@ const Wrapper = styled.div`
     font-size: 20px;
     margin: 15px;
   }
+
+  span {
+    color: #673ab7;
+    font-weight: 700;
+  }
 `;
 
 export default function Score({
@@ -37,25 +42,21 @@ export default function Score({
   return (
     <Wrapper>
       <h1>
-        Hello, <span style={{ color: "#673ab7" }}>{name}</span> !
+        Hello, <span>{name}</span> !
       </h1>
       <p>
         It took&nbsp;
-        <span style={{ fontWeight: 700, color: "#673ab7" }}>
-          {duration / 1000}
-        </span>
+        <span>{duration / 1000}</span>
         &nbsp;second to solve the Quizzes ⏱️
       </p>
       <p>
         Congratulations! You got&nbsp;
-        <span style={{ fontWeight: 700, color: "#673ab7" }}>
-          {correctAnswer}
-        </span>
+        <span>{correctAnswer}</span>
         &nbsp;right 🎉
       </p>
       <p>
         But you got&nbsp;
-        <span style={{ fontWeight: 700, color: "#673ab7" }}>{wrongAnswer}</span>
+        <span>{wrongAnswer}</span>
         &nbsp;questions wrong • • • 💫
       </p>
 
