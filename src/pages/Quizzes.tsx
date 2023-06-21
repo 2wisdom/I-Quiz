@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   max-width: 1200px;
 `;
 
-export default function Quizzes({ onAnswerChage }: any) {
+export default function Quizzes({ onAnswerChange }: any) {
   const navigation = useNavigate();
 
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -28,6 +28,7 @@ export default function Quizzes({ onAnswerChage }: any) {
   >("primary");
   const [startTime, setStartTime] = useState<number | null>(null);
   const [endTime, setEndTime] = useState<number | null>(null);
+  const [duration, setDuration] = useState<number | null>(0); // 초기 값을 0으로 설정
 
   // 정답/오답 갯수
   const [correctAnswer, setCorrectAnswer] = useState(0);
@@ -58,11 +59,15 @@ export default function Quizzes({ onAnswerChage }: any) {
 
   useEffect(() => {
     startQuiz();
-    // if (startTime && endTime) {
-    //   const duration = endTime - startTime;
-    //   console.log("use퀴즈를 푸는 데 걸린 시간:", duration, "밀리초");
-    //   console.log(`정답: ${correctAnswer}, 오답: ${wrongAnswer}`);
-    // }
+  }, []);
+
+  useEffect(() => {
+    if (endTime !== null) {
+      const durationTime = endTime - startTime!;
+      setDuration(durationTime);
+      console.log("퀴즈를 푸는 데 걸린 시간:", durationTime, "밀리초");
+      console.log("duration", duration);
+    }
   }, [endTime]);
 
   const handleAnswer = (answer: string) => {
@@ -86,9 +91,18 @@ export default function Quizzes({ onAnswerChage }: any) {
     if (questionIndex + 1 < amount) {
       setQuestionIndex(questionIndex + 1);
     } else {
-      setEndTime(Date.now());
+      const endTime = Date.now(); // endTime을 설정
+      setEndTime(endTime);
       console.log("Quiz completed!");
-      onAnswerChage(correctAnswer, wrongAnswer);
+      console.log(
+        "correctAnswer",
+        correctAnswer,
+        "wrongAnswer",
+        wrongAnswer,
+        "duration",
+        duration
+      );
+      onAnswerChange(correctAnswer, wrongAnswer, endTime - startTime!); // duration을 계산하여 전달
 
       navigation(`/score?name=${encodeURIComponent(name)}`);
     }

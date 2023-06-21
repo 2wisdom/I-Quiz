@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 export type ScoreProps = {
   correctAnswer: number;
   wrongAnswer: number;
+  duration: number;
 };
 
 const Wrapper = styled.div`
@@ -22,7 +23,11 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function Score({ correctAnswer, wrongAnswer }: ScoreProps) {
+export default function Score({
+  correctAnswer,
+  wrongAnswer,
+  duration,
+}: ScoreProps) {
   const navigator = useNavigate();
 
   const location = useLocation();
@@ -36,7 +41,7 @@ export default function Score({ correctAnswer, wrongAnswer }: ScoreProps) {
       </h1>
       <p>
         It took&nbsp;
-        <span style={{ fontWeight: 700, color: "#673ab7" }}>{}</span>
+        <span style={{ fontWeight: 700, color: "#673ab7" }}>{duration}</span>
         &nbsp;minutes to solve the Quizzes ⏱️
       </p>
       <p>

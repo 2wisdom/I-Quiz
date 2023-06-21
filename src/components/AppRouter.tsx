@@ -10,7 +10,12 @@ export default function AppRouter() {
   const [correctAnswer, setCorrectAnswer] = useState(0);
   const [wrongAnswer, setWrongAnswer] = useState(0);
 
-  const handleAnswerChage = (correct: number, wrong: number) => {
+  const handleAnswerChange = (
+    correct: number,
+    wrong: number,
+    duration: number
+  ) => {
+    setDuration(duration);
     setCorrectAnswer(correct);
     setWrongAnswer(wrong);
   };
@@ -23,12 +28,16 @@ export default function AppRouter() {
     },
     {
       path: "/quiz",
-      element: <Quizzes onAnswerChage={handleAnswerChage} />,
+      element: <Quizzes onAnswerChange={handleAnswerChange} />,
     },
     {
       path: "/score",
       element: (
-        <Score correctAnswer={correctAnswer} wrongAnswer={wrongAnswer} />
+        <Score
+          correctAnswer={correctAnswer}
+          wrongAnswer={wrongAnswer}
+          duration={duration}
+        />
       ),
     },
   ]);
