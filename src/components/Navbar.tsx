@@ -6,7 +6,16 @@ export default function Navbar() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Video Game Quiz !
+            <a
+              href="/"
+              style={{
+                fontWeight: 700,
+                color: "#ffffff",
+                textDecoration: "none",
+              }}
+            >
+              a Video Game Quiz !
+            </a>
           </Typography>
         </Toolbar>
       </AppBar>
