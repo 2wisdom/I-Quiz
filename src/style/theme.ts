@@ -11,31 +11,10 @@ const theme = createTheme({
       main: deepPurple[600],
     },
     error: {
-      main: red.A400,
-    },
-  },
-});
-
-// 정답
-const correct = createTheme({
-  palette: {
-    primary: {
-      main: green[700],
-    },
-    secondary: {
-      main: green[500],
-    },
-  },
-});
-
-// 오답
-const wrong = createTheme({
-  palette: {
-    primary: {
       main: red[700],
     },
-    secondary: {
-      main: red[500],
+    success: {
+      main: green[700],
     },
   },
 });

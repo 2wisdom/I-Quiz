@@ -25,6 +25,10 @@ const Wrapper = styled.div`
 export default function Quizzes() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [disabled, setDisabled] = useState(true);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [buttonColor, setButtonColor] = useState<
+    "primary" | "error" | "success"
+  >("primary");
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -50,15 +54,22 @@ export default function Quizzes() {
 
   const handleAnswer = (answer: string) => {
     setDisabled(false);
+    setSelectedAnswer(answer);
+
     if (answer === data!.data.results[questionIndex].correct_answer) {
+      setButtonColor("success");
       console.log("정답!");
     } else {
+      setButtonColor("error");
       console.log("오답!");
     }
   };
 
   const handleNextQuestion = () => {
     setDisabled(true);
+    setSelectedAnswer(null);
+    setButtonColor("primary");
+
     if (questionIndex + 1 < amount) {
       setQuestionIndex(questionIndex + 1);
     } else {
@@ -104,6 +115,18 @@ export default function Quizzes() {
               variant="outlined"
               sx={{ margin: 3 }}
               onClick={() => handleAnswer(answer)}
+              disabled={selectedAnswer !== null}
+              style={{
+                color: selectedAnswer === answer ? "white" : "inherit",
+                backgroundColor:
+                  selectedAnswer === answer
+                    ? buttonColor === "success"
+                      ? "green"
+                      : buttonColor === "error"
+                      ? "red"
+                      : "inherit"
+                    : "inherit",
+              }}
             >
               {answer}
             </Button>
@@ -116,7 +139,7 @@ export default function Quizzes() {
         variant="contained"
         sx={{ margin: 3 }}
         onClick={handleNextQuestion}
-        disabled={disabled}
+        disabled={disabled || selectedAnswer === null}
       >
         Next
       </Button>
