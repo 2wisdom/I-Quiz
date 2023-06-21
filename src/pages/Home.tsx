@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import {
+  Alert,
   Button,
   FormControl,
   FormControlLabel,
@@ -7,7 +8,7 @@ import {
   NativeSelect,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
@@ -28,11 +29,16 @@ export default function Home() {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(15);
   const [difficulty, setDifficulty] = useState("medium");
+  const [disabled, setDisabled] = useState(true);
 
   // name 변경 이벤트 핸들러
   const handleNameChange = (e: React.ChangeEvent<{ value: unknown }>) => {
     setName(e.target.value as string);
   };
+
+  useEffect(() => {
+    setDisabled(!name);
+  }, [name]);
 
   // Amount 변경 이벤트 핸들러
   const handleAmountChange = (e: React.ChangeEvent<{ value: unknown }>) => {
@@ -120,6 +126,7 @@ export default function Home() {
             variant="contained"
             style={{ margin: 10 }}
             onClick={handleClick}
+            disabled={disabled}
           >
             Start!
           </Button>
