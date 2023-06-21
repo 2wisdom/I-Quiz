@@ -24,13 +24,14 @@ const Wrapper = styled.div`
 
 export default function Quizzes() {
   const [questionIndex, setQuestionIndex] = useState(0);
+  const [disabled, setDisabled] = useState(true);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const amount = Number(searchParams.get("amount"));
   const difficulty = searchParams.get("difficulty") || "medium";
 
-  const { data } = useQuery(["quizzes"], async () => {
+  const { data, isLoading } = useQuery(["quizzes"], async () => {
     const { data } = await Api.get(`/`, {
       params: {
         amount,
@@ -48,8 +49,7 @@ export default function Quizzes() {
   console.log("data", data);
 
   const handleAnswer = (answer: string) => {
-    // setAnswers([...answers, answer]);
-
+    setDisabled(false);
     if (answer === data!.data.results[questionIndex].correct_answer) {
       console.log("정답!");
     } else {
@@ -58,6 +58,7 @@ export default function Quizzes() {
   };
 
   const handleNextQuestion = () => {
+    setDisabled(true);
     if (questionIndex + 1 < amount) {
       setQuestionIndex(questionIndex + 1);
     } else {
@@ -65,11 +66,11 @@ export default function Quizzes() {
     }
   };
 
-  if (!data) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  const currentQuestion = data.data.results[questionIndex];
+  const currentQuestion = data!.data.results[questionIndex];
   const { question, correct_answer, incorrect_answers } = currentQuestion;
 
   // question 내용에서 &quot;를 큰따옴표(")로 치환
@@ -115,6 +116,7 @@ export default function Quizzes() {
         variant="contained"
         sx={{ margin: 3 }}
         onClick={handleNextQuestion}
+        disabled={disabled}
       >
         Next
       </Button>
