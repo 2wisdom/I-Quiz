@@ -133,7 +133,6 @@ export default function Quizzes({ onAnswerChange }: any) {
   );
 
   const allAnswers = [...updatedIncorrectAnswers, updatedCorrectAnswer];
-  const shuffledAnswers = shuffle(allAnswers);
 
   return (
     <Wrapper>
@@ -144,29 +143,31 @@ export default function Quizzes({ onAnswerChange }: any) {
 
       {/* 답안 */}
       <Grid container rowSpacing={1}>
-        {shuffledAnswers.map((answer) => (
-          <Grid xs={6} item={true} key={answer}>
-            <Button
-              variant="outlined"
-              sx={{ margin: 3 }}
-              onClick={() => handleAnswer(answer)}
-              disabled={selectedAnswer !== null}
-              style={{
-                color: selectedAnswer === answer ? "white" : "inherit",
-                backgroundColor:
-                  selectedAnswer === answer
-                    ? buttonColor === "success"
-                      ? "green"
-                      : buttonColor === "error"
-                      ? "red"
-                      : "inherit"
-                    : "inherit",
-              }}
-            >
-              {answer}
-            </Button>
-          </Grid>
-        ))}
+        {allAnswers
+          .sort(() => Math.random() - 0.5)
+          .map((answer) => (
+            <Grid xs={6} item={true} key={answer}>
+              <Button
+                variant="outlined"
+                sx={{ margin: 3 }}
+                onClick={() => handleAnswer(answer)}
+                disabled={selectedAnswer !== null}
+                style={{
+                  color: selectedAnswer === answer ? "white" : "inherit",
+                  backgroundColor:
+                    selectedAnswer === answer
+                      ? buttonColor === "success"
+                        ? "green"
+                        : buttonColor === "error"
+                        ? "red"
+                        : "inherit"
+                      : "inherit",
+                }}
+              >
+                {answer}
+              </Button>
+            </Grid>
+          ))}
       </Grid>
 
       {/* Next */}
@@ -180,14 +181,4 @@ export default function Quizzes({ onAnswerChange }: any) {
       </Button>
     </Wrapper>
   );
-}
-
-// 배열 요소를 무작위로 섞는 함수
-function shuffle(array: any[]) {
-  const shuffledArray = [...array];
-  for (let i = shuffledArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-  }
-  return shuffledArray;
 }
