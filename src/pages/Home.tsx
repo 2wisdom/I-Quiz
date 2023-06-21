@@ -53,7 +53,6 @@ export default function Home() {
   const navigation = useNavigate();
 
   const handleClick = () => {
-    console.log(`name ${name} amount ${amount} difficulty ${difficulty}`);
     navigation(`/quiz?amount=${amount}&difficulty=${difficulty}&name=${name}`);
   };
 

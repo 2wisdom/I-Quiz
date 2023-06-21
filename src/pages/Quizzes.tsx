@@ -65,8 +65,6 @@ export default function Quizzes({ onAnswerChange }: any) {
     if (endTime !== null) {
       const durationTime = endTime - startTime!;
       setDuration(durationTime);
-      console.log("퀴즈를 푸는 데 걸린 시간:", durationTime, "밀리초");
-      console.log("duration", duration);
     }
   }, [endTime]);
 
@@ -93,15 +91,6 @@ export default function Quizzes({ onAnswerChange }: any) {
     } else {
       const endTime = Date.now(); // endTime을 설정
       setEndTime(endTime);
-      console.log("Quiz completed!");
-      console.log(
-        "correctAnswer",
-        correctAnswer,
-        "wrongAnswer",
-        wrongAnswer,
-        "duration",
-        duration
-      );
       onAnswerChange(correctAnswer, wrongAnswer, endTime - startTime!); // duration을 계산하여 전달
 
       navigation(`/score?name=${encodeURIComponent(name)}`);
