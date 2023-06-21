@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 
@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 `;
 
 export default function Score({ correctAnswer, wrongAnswer }: ScoreProps) {
-  console.log(correctAnswer, wrongAnswer);
+  const navigator = useNavigate();
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -52,7 +52,13 @@ export default function Score({ correctAnswer, wrongAnswer }: ScoreProps) {
         &nbsp;questions wrong • • • 💫
       </p>
 
-      <Button>Try Again ?</Button>
+      <Button
+        onClick={() => {
+          navigator("/");
+        }}
+      >
+        Try Again ?
+      </Button>
     </Wrapper>
   );
 }
