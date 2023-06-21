@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Api from "../api/api";
 import styled from "@emotion/styled";
-import { Button, Grid, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -102,7 +102,18 @@ export default function Quizzes({ onAnswerChange }: any) {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          height: "80vh",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   const currentQuestion = data!.data.results[questionIndex];
