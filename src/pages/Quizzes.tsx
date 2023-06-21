@@ -2,13 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import Api from "../api/api";
 import styled from "@emotion/styled";
 import { Button, Grid, Typography } from "@mui/material";
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
-
-export type Props = {
-  amount: number; // 문제 갯수
-  difficulty: string; // 난이도 (easy / medium / hard)
-};
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,18 +17,27 @@ const Wrapper = styled.div`
   max-width: 1200px;
 `;
 
-export default function Quizzes() {
+export default function Quizzes({ onAnswerChage }: any) {
+  const navigation = useNavigate();
+
   const [questionIndex, setQuestionIndex] = useState(0);
   const [disabled, setDisabled] = useState(true);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [buttonColor, setButtonColor] = useState<
     "primary" | "error" | "success"
   >("primary");
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [endTime, setEndTime] = useState<number | null>(null);
+
+  // 정답/오답 갯수
+  const [correctAnswer, setCorrectAnswer] = useState(0);
+  const [wrongAnswer, setWrongAnswer] = useState(0);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const amount = Number(searchParams.get("amount"));
   const difficulty = searchParams.get("difficulty") || "medium";
+  const name = searchParams.get("name") || "";
 
   const { data, isLoading } = useQuery(["quizzes"], async () => {
     const { data } = await Api.get(`/`, {
@@ -52,16 +56,25 @@ export default function Quizzes() {
 
   console.log("data", data);
 
+  useEffect(() => {
+    startQuiz();
+    // if (startTime && endTime) {
+    //   const duration = endTime - startTime;
+    //   console.log("use퀴즈를 푸는 데 걸린 시간:", duration, "밀리초");
+    //   console.log(`정답: ${correctAnswer}, 오답: ${wrongAnswer}`);
+    // }
+  }, [endTime]);
+
   const handleAnswer = (answer: string) => {
     setDisabled(false);
     setSelectedAnswer(answer);
 
     if (answer === data!.data.results[questionIndex].correct_answer) {
       setButtonColor("success");
-      console.log("정답!");
+      setCorrectAnswer((count) => count + 1);
     } else {
       setButtonColor("error");
-      console.log("오답!");
+      setWrongAnswer((count) => count + 1);
     }
   };
 
@@ -73,8 +86,16 @@ export default function Quizzes() {
     if (questionIndex + 1 < amount) {
       setQuestionIndex(questionIndex + 1);
     } else {
+      setEndTime(Date.now());
       console.log("Quiz completed!");
+      onAnswerChage(correctAnswer, wrongAnswer);
+
+      navigation(`/score?name=${encodeURIComponent(name)}`);
     }
+  };
+
+  const startQuiz = () => {
+    setStartTime(Date.now());
   };
 
   if (isLoading) {
