@@ -26,14 +26,15 @@ export default function Quizzes({ onAnswerChange }: any) {
   const [buttonColor, setButtonColor] = useState<
     "primary" | "error" | "success"
   >("primary");
+  // 문제 풀이에 걸린 시간
   const [startTime, setStartTime] = useState<number | null>(null);
   const [endTime, setEndTime] = useState<number | null>(null);
-  const [duration, setDuration] = useState<number | null>(0); // 초기 값을 0으로 설정
-
-  // 정답/오답 갯수
+  const [duration, setDuration] = useState<number | null>(0);
+  // 정답 & 오답 count
   const [correctAnswer, setCorrectAnswer] = useState(0);
   const [wrongAnswer, setWrongAnswer] = useState(0);
 
+  /* Params */
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const amount = useMemo(() => Number(searchParams.get("amount")), []);
@@ -43,6 +44,7 @@ export default function Quizzes({ onAnswerChange }: any) {
   );
   const name = useMemo(() => searchParams.get("name") || "", []);
 
+  /* Connect API */
   const { data, isLoading } = useQuery(["quizzes"], async () => {
     const { data } = await Api.get(`/`, {
       params: {
@@ -53,6 +55,9 @@ export default function Quizzes({ onAnswerChange }: any) {
       },
     });
 
+    /**
+     * 퀴즈의 4가지 문항을 무작위로 섞는 함수
+     */
     const updateData = data.results.map(
       (result: any) => {
         const { correct_answer, incorrect_answers } = result;
@@ -77,10 +82,16 @@ export default function Quizzes({ onAnswerChange }: any) {
     };
   });
 
+  /**
+   * 퀴즈 시작 시간 설정
+   */
   useEffect(() => {
-    startQuiz();
+    setStartTime(Date.now());
   }, []);
 
+  /**
+   * 문제 종료 후 걸린 시간 계산
+   */
   useEffect(() => {
     if (endTime !== null) {
       const durationTime = endTime - startTime!;
@@ -88,6 +99,9 @@ export default function Quizzes({ onAnswerChange }: any) {
     }
   }, [endTime]);
 
+  /**
+   * 답안을 고를 때 실행되는 함수
+   */
   const handleAnswer = (answer: string) => {
     setDisabled(false);
     setSelectedAnswer(answer);
@@ -101,6 +115,9 @@ export default function Quizzes({ onAnswerChange }: any) {
     }
   };
 
+  /**
+   * Next 클릭 시 실행되는 함수
+   */
   const handleNextQuestion = () => {
     setDisabled(true);
     setSelectedAnswer(null);
@@ -117,10 +134,9 @@ export default function Quizzes({ onAnswerChange }: any) {
     }
   };
 
-  const startQuiz = () => {
-    setStartTime(Date.now());
-  };
-
+  /**
+   * Loading UI
+   */
   if (isLoading) {
     return (
       <Box
