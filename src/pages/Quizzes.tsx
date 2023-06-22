@@ -101,21 +101,6 @@ export default function Quizzes({ onAnswerChange }: any) {
     setStartTime(Date.now());
   };
 
-  if (isLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          height: "80vh",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
-
   const currentQuestion = data!.data.results[questionIndex];
   const { question, correct_answer, incorrect_answers } = currentQuestion;
 
@@ -133,6 +118,21 @@ export default function Quizzes({ onAnswerChange }: any) {
   );
 
   const allAnswers = [...updatedIncorrectAnswers, updatedCorrectAnswer];
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          height: "80vh",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Wrapper>
