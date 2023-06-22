@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import Api from "../api/api";
 import styled from "@emotion/styled";
 import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
@@ -36,9 +36,12 @@ export default function Quizzes({ onAnswerChange }: any) {
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const amount = Number(searchParams.get("amount"));
-  const difficulty = searchParams.get("difficulty") || "medium";
-  const name = searchParams.get("name") || "";
+  const amount = useMemo(() => Number(searchParams.get("amount")), []);
+  const difficulty = useMemo(
+    () => searchParams.get("difficulty") || "medium",
+    []
+  );
+  const name = useMemo(() => searchParams.get("name") || "", []);
 
   const { data, isLoading } = useQuery(["quizzes"], async () => {
     const { data } = await Api.get(`/`, {
