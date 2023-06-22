@@ -143,31 +143,29 @@ export default function Quizzes({ onAnswerChange }: any) {
 
       {/* 답안 */}
       <Grid container rowSpacing={1}>
-        {allAnswers
-          .sort(() => Math.random() - 0.5)
-          .map((answer) => (
-            <Grid xs={6} item={true} key={answer}>
-              <Button
-                variant="outlined"
-                sx={{ margin: 3 }}
-                onClick={() => handleAnswer(answer)}
-                disabled={selectedAnswer !== null}
-                style={{
-                  color: selectedAnswer === answer ? "white" : "inherit",
-                  backgroundColor:
-                    selectedAnswer === answer
-                      ? buttonColor === "success"
-                        ? "green"
-                        : buttonColor === "error"
-                        ? "red"
-                        : "inherit"
-                      : "inherit",
-                }}
-              >
-                {answer}
-              </Button>
-            </Grid>
-          ))}
+        {allAnswers.map((answer) => (
+          <Grid xs={6} item={true} key={answer}>
+            <Button
+              variant="outlined"
+              sx={{ margin: 3 }}
+              onClick={() => handleAnswer(answer)}
+              disabled={selectedAnswer !== null}
+              style={{
+                color: selectedAnswer === answer ? "white" : "inherit",
+                backgroundColor:
+                  selectedAnswer === answer
+                    ? buttonColor === "success"
+                      ? "green"
+                      : buttonColor === "error"
+                      ? "red"
+                      : "inherit"
+                    : "inherit",
+              }}
+            >
+              {answer}
+            </Button>
+          </Grid>
+        ))}
       </Grid>
 
       {/* Next */}
