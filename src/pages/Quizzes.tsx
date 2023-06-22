@@ -50,8 +50,22 @@ export default function Quizzes({ onAnswerChange }: any) {
       },
     });
 
+    const updateData = data.results.map((result: any) => {
+      const { correct_answer, incorrect_answers } = result;
+      const allAnswers = [...incorrect_answers, correct_answer];
+
+      const shuffleAnswers = allAnswers.sort((a, b) => 0.5 - Math.random());
+
+      return {
+        ...result,
+        shuffleAnswers,
+      };
+    });
+
     return {
-      data,
+      data: {
+        results: updateData,
+      },
     };
   });
 
@@ -133,6 +147,9 @@ export default function Quizzes({ onAnswerChange }: any) {
   );
 
   const allAnswers = [...updatedIncorrectAnswers, updatedCorrectAnswer];
+  // const allAnswers = currentQuestion.shuffledAnswers;
+
+  console.log(data, currentQuestion);
 
   return (
     <Wrapper>
@@ -143,7 +160,7 @@ export default function Quizzes({ onAnswerChange }: any) {
 
       {/* 답안 */}
       <Grid container rowSpacing={1}>
-        {allAnswers.map((answer) => (
+        {data?.data.results[questionIndex].shuffleAnswers.map((answer: any) => (
           <Grid xs={6} item={true} key={answer}>
             <Button
               variant="outlined"
