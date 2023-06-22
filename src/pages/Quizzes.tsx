@@ -69,8 +69,6 @@ export default function Quizzes({ onAnswerChange }: any) {
     };
   });
 
-  console.log("data", data);
-
   useEffect(() => {
     startQuiz();
   }, []);
@@ -131,31 +129,13 @@ export default function Quizzes({ onAnswerChange }: any) {
   }
 
   const currentQuestion = data!.data.results[questionIndex];
-  const { question, correct_answer, incorrect_answers } = currentQuestion;
-
-  // question 내용에서 &quot;를 큰따옴표(")로 치환
-  const updatedQuestion = currentQuestion.question
-    .replace(/&quot;/g, `"`)
-    .replace(/&#039;/g, `'`);
-
-  // correct_answer와 incorrect_answers에서 &quot;와 &#039;를 치환
-  const updatedCorrectAnswer = correct_answer
-    .replace(/&quot;/g, `"`)
-    .replace(/&#039;/g, `'`);
-  const updatedIncorrectAnswers = incorrect_answers.map((answer: string) =>
-    answer.replace(/&quot;/g, `"`).replace(/&#039;/g, `'`)
-  );
-
-  const allAnswers = [...updatedIncorrectAnswers, updatedCorrectAnswer];
-  // const allAnswers = currentQuestion.shuffledAnswers;
-
-  console.log(data, currentQuestion);
+  const { question } = currentQuestion;
 
   return (
     <Wrapper>
       {/* 문제 */}
       <Typography sx={{ fontSize: 20, margin: 5 }}>
-        {updatedQuestion}
+        {question.replace(/&quot;/g, `"`).replace(/&#039;/g, `'`)}
       </Typography>
 
       {/* 답안 */}
@@ -179,7 +159,7 @@ export default function Quizzes({ onAnswerChange }: any) {
                     : "inherit",
               }}
             >
-              {answer}
+              {answer.replace(/&quot;/g, `"`).replace(/&#039;/g, `'`)}
             </Button>
           </Grid>
         ))}
