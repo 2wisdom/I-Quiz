@@ -50,17 +50,22 @@ export default function Quizzes({ onAnswerChange }: any) {
       },
     });
 
-    const updateData = data.results.map((result: any) => {
-      const { correct_answer, incorrect_answers } = result;
-      const allAnswers = [...incorrect_answers, correct_answer];
+    const updateData = data.results.map(
+      (result: any) => {
+        const { correct_answer, incorrect_answers } = result;
+        const allAnswers = [...incorrect_answers, correct_answer];
 
-      const shuffleAnswers = allAnswers.sort((a, b) => 0.5 - Math.random());
+        const shuffleAnswers = allAnswers.sort((a, b) => 0.5 - Math.random());
 
-      return {
-        ...result,
-        shuffleAnswers,
-      };
-    });
+        return {
+          ...result,
+          shuffleAnswers,
+        };
+      },
+      {
+        enabled: !data, // data가 없을 때만 API 요청
+      }
+    );
 
     return {
       data: {
